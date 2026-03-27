@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BlogArticle } from '~~/types/blog'
+import { getArticlePreview } from '~~/utils/article-content'
 
 const props = defineProps<{
   article: BlogArticle
@@ -19,6 +20,16 @@ const authorInitials = computed(() => {
     .slice(0, 2)
     .toUpperCase()
 })
+
+const articlePreview = computed(() => getArticlePreview(props.article.content))
+
+const articleHref = computed(() => {
+  if (!props.article.documentId) {
+    return null
+  }
+
+  return `/articles/${props.article.documentId}`
+})
 </script>
 
 <template>
@@ -32,7 +43,7 @@ const authorInitials = computed(() => {
       >
     </figure>
 
-    <div class="card-body gap-6">
+    <div class="card-body gap-5">
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div class="space-y-3">
           <div class="flex flex-wrap gap-2">
@@ -67,42 +78,49 @@ const authorInitials = computed(() => {
         </div>
       </div>
 
-      <div class="flex items-start gap-3 rounded-3xl border border-slate-200/80 bg-slate-50/90 p-4">
-        <div class="avatar placeholder">
+      <div class="flex items-center gap-3 rounded-3xl border border-slate-200/80 bg-slate-50/90 p-4">
+        <div class="avatar placeholder shrink-0">
           <div class="w-12 rounded-2xl bg-slate-900 text-sm font-semibold text-white">
             <span>{{ authorInitials }}</span>
           </div>
         </div>
 
-        <div class="space-y-1">
+        <div class="min-w-0 space-y-1">
           <div class="flex items-center gap-2 text-sm text-slate-500">
             <span class="material-symbols-rounded !text-base text-amber-600">person</span>
             <span class="font-medium uppercase tracking-[0.2em]">Auteur</span>
           </div>
-          <p class="text-base font-semibold text-slate-900">
+          <p class="truncate text-base font-semibold text-slate-900">
             {{ article.author?.name || 'Auteur non renseigné' }}
           </p>
-          <p v-if="article.author?.bio" class="text-sm leading-6 text-slate-600">
-            {{ article.author.bio }}
-          </p>
-          <a
-            v-if="article.author?.email"
-            :href="`mailto:${article.author.email}`"
-            class="text-sm font-medium text-sky-700 transition hover:text-sky-900"
-          >
-            {{ article.author.email }}
-          </a>
         </div>
       </div>
 
       <div class="space-y-3">
         <div class="flex items-center gap-2 text-sm text-slate-500">
           <span class="material-symbols-rounded !text-base text-sky-700">article</span>
-          <span class="font-medium uppercase tracking-[0.2em]">Contenu</span>
+          <span class="font-medium uppercase tracking-[0.2em]">Aperçu</span>
         </div>
-        <p class="article-copy text-[1.02rem] leading-8 text-slate-700">
-          {{ article.content }}
+        <p class="article-excerpt text-[1.02rem] text-slate-700">
+          {{ articlePreview }}
         </p>
+      </div>
+
+      <div class="card-actions justify-end">
+        <NuxtLink
+          v-if="articleHref"
+          :to="articleHref"
+          class="btn btn-primary rounded-full px-5"
+        >
+          Lire l’article
+        </NuxtLink>
+        <button
+          v-else
+          class="btn btn-disabled rounded-full px-5"
+          type="button"
+        >
+          Article indisponible
+        </button>
       </div>
     </div>
   </article>

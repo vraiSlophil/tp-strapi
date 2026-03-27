@@ -25,7 +25,7 @@ const authorCount = computed(() => {
 
 useSeoMeta({
   title: 'Blog Tech Headless',
-  description: 'Affichage SSR des articles Strapi dans Nuxt avec leurs catégories, leur auteur et leur image.',
+  description: 'Liste SSR des articles Strapi avec aperçu, auteur, catégories et navigation vers une page détail.',
 })
 </script>
 
@@ -44,8 +44,9 @@ useSeoMeta({
               Blog tech Nuxt connecté à Strapi, chargé côté serveur avec <span class="text-sky-700">useFetch</span>.
             </h1>
             <p class="max-w-2xl text-lg leading-8 text-slate-600">
-              Cette page consomme l’API du back-office headless et affiche directement les articles publiés avec leur
-              contenu, leurs catégories et les informations d’auteur demandées dans le TD.
+              Cette page consomme l’API du back-office headless et affiche les articles publiés sous forme d’aperçu.
+              Chaque carte donne accès à une page détail qui rend le contenu en markdown avec les catégories et
+              l’auteur.
             </p>
           </div>
         </div>

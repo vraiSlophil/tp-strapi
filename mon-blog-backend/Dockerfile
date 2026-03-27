@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 1337 5173
 
-CMD ["npm", "run", "develop", "--", "--polling", "--no-open"]
+CMD ["npm", "run", "develop", "--", "--polling"]

@@ -7,9 +7,21 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'markdown-it',
+      ]
+    }
+
   },
   runtimeConfig: {
     strapiToken: process.env.STRAPI_TOKEN || '',
+    strapiInternalUrl:
+      process.env.NUXT_STRAPI_INTERNAL_URL
+      || process.env.NUXT_PUBLIC_STRAPI_URL
+      || 'http://localhost:1337',
     public: {
       strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL || 'http://localhost:1337',
     },
