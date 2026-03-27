@@ -110,7 +110,6 @@ node_modules
 !.yarn/versions
 .pnp.*
 yarn-error.log
-npm-debug.log
 
 ############################
 # Tests
@@ -130,10 +129,3 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
-
-############################
-# Nuxt
-############################
-
-.nuxt
-.output

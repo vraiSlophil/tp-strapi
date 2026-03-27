@@ -1,0 +1,50 @@
+services:
+  strapi:
+    build:
+      context: ./mon-blog-backend
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: npm run develop -- --polling --no-open
+    env_file:
+      - ./mon-blog-backend/.env
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "1337:1337"
+      - "5173:5173"
+    volumes:
+      - ./mon-blog-backend:/app
+      - strapi_node_modules:/app/node_modules
+      - strapi_tmp:/app/.tmp
+      - strapi_uploads:/app/public/uploads
+    restart: unless-stopped
+    init: true
+
+  nuxt:
+    build:
+      context: ./mon-blog-frontend
+      dockerfile: Dockerfile
+    working_dir: /app
+    command: npm run dev -- --host 0.0.0.0 --port 3000
+    depends_on:
+      - strapi
+    environment:
+      NODE_ENV: development
+      NUXT_PUBLIC_STRAPI_URL: http://strapi:1337
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mon-blog-frontend:/app
+      - nuxt_node_modules:/app/node_modules
+    restart: unless-stopped
+    init: true
+
+volumes:
+  strapi_node_modules:
+  strapi_tmp:
+  strapi_uploads:
+  nuxt_node_modules:
